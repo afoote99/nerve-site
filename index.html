@@ -428,14 +428,14 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
     <div class="brand" style="font-size:1.05rem;">nerve</div>
     <span>© 2026 Nerve</span>
     <div class="spacer"></div>
-    <a href="mailto:hello@nerve.fyi">Contact</a>
+    <a href="mailto:allan@nerve.fyi">Contact</a>
   </div>
 </footer>
 
 <script>
 // Waitlist: set FORM_ENDPOINT to your Formspree endpoint (https://formspree.io/f/XXXX).
 // Until it's set, submissions fall back to a pre-filled email.
-const FORM_ENDPOINT = "";
+const FORM_ENDPOINT = "https://formspree.io/f/mnjelvzq";
 
 function wireForm(formId, emailId, noteId) {
   const form = document.getElementById(formId);
@@ -445,7 +445,7 @@ function wireForm(formId, emailId, noteId) {
     const email = document.getElementById(emailId).value.trim();
     if (!email) return;
     if (!FORM_ENDPOINT) {
-      window.location.href = `mailto:hello@nerve.fyi?subject=Nerve%20waitlist&body=Please%20add%20me%20to%20the%20waitlist:%20${encodeURIComponent(email)}`;
+      window.location.href = `mailto:allan@nerve.fyi?subject=Nerve%20waitlist&body=Please%20add%20me%20to%20the%20waitlist:%20${encodeURIComponent(email)}`;
       return;
     }
     try {
@@ -459,10 +459,10 @@ function wireForm(formId, emailId, noteId) {
         note.textContent = "You're on the list. We'll be in touch soon.";
         note.classList.add("ok");
       } else {
-        note.textContent = "Something went wrong. Email hello@nerve.fyi and we'll add you.";
+        note.textContent = "Something went wrong. Email allan@nerve.fyi and we'll add you.";
       }
     } catch {
-      note.textContent = "Something went wrong. Email hello@nerve.fyi and we'll add you.";
+      note.textContent = "Something went wrong. Email allan@nerve.fyi and we'll add you.";
     }
   });
 }

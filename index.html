@@ -16,17 +16,16 @@
 <style>
 :root {
   --bg: #ffffff;
-  --bg-soft: #f6f8fb;
+  --bg-soft: #f2f6fb;
   --panel: #ffffff;
-  --border: #e5e9f0;
+  --border: #e3e8f0;
   --text: #17202e;
   --muted: #5a6577;
   --accent: #2b7fd9;
   --accent-soft: rgba(43, 127, 217, 0.08);
   --good: #1a9e57;
-  --warn: #b97d10;
   --radius: 14px;
-  --shadow: 0 1px 2px rgba(23,32,46,.05), 0 8px 28px rgba(23,32,46,.06);
+  --shadow: 0 1px 2px rgba(23,32,46,.05), 0 8px 28px rgba(23,32,46,.07);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -61,22 +60,28 @@ nav {
 }
 .btn:hover { transform: translateY(-1px); background: #2470c4; box-shadow: 0 6px 20px rgba(43,127,217,.25); }
 .btn.small { padding: 8px 16px; font-size: 0.88rem; }
-.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
-.btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); box-shadow: none; }
 
 /* ---------- hero ---------- */
 .hero { padding: 100px 0 64px; position: relative; overflow: hidden; }
 .hero::before {
-  content: ""; position: absolute; inset: -30% -10% auto; height: 120%;
-  background: radial-gradient(ellipse 50% 40% at 70% 15%, rgba(43,127,217,0.07), transparent 65%);
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, #d7e2f2 1.1px, transparent 1.1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 20%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 20%, #000 30%, transparent 75%);
   pointer-events: none;
 }
-.hero .wrap { position: relative; }
+.hero::after {
+  content: ""; position: absolute; inset: -30% -10% auto; height: 120%;
+  background: radial-gradient(ellipse 50% 40% at 72% 12%, rgba(43,127,217,0.09), transparent 65%);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 1; }
 .eyebrow {
   display: inline-block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em;
   text-transform: uppercase; color: var(--accent);
   border: 1px solid rgba(43,127,217,0.3); border-radius: 999px; padding: 5px 14px;
-  margin-bottom: 26px; background: var(--accent-soft);
+  margin-bottom: 26px; background: #fff;
 }
 h1 { font-size: clamp(2.3rem, 5.4vw, 3.6rem); font-weight: 700; line-height: 1.12; max-width: 800px; }
 h1 em { font-style: normal; color: var(--accent); }
@@ -93,42 +98,56 @@ h1 em { font-style: normal; color: var(--accent); }
 .form-note { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
 .form-note.ok { color: var(--good); }
 
-/* ---------- product mock (stays dark, like a screenshot) ---------- */
-.mockwrap { padding: 26px 0 88px; }
+/* ---------- pipeline mock (dark, like a screenshot) ---------- */
+.mockwrap { padding: 26px 0 88px; position: relative; }
+.mockwrap::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 40%; bottom: -20px;
+  background: linear-gradient(180deg, transparent, var(--bg-soft));
+  pointer-events: none;
+}
 .mock {
+  position: relative;
   background: linear-gradient(180deg, #141926, #10151f);
   border: 1px solid #222a3a; border-radius: 18px;
-  padding: 26px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px;
-  box-shadow: 0 24px 70px rgba(23,32,46,.22);
-  color: #e8ecf4;
+  padding: 24px; display: grid; grid-template-columns: 1fr 26px 1.1fr 26px 1fr; gap: 14px;
+  box-shadow: 0 24px 70px rgba(23,32,46,.25);
+  color: #e8ecf4; align-items: stretch;
 }
-.mock h4 { font-size: 0.76rem; text-transform: uppercase; letter-spacing: .08em; color: #97a1b5; margin-bottom: 14px; font-weight: 600; }
-.mock-card { background: #0f131c; border: 1px solid #222a3a; border-radius: var(--radius); padding: 18px 20px; }
-.step { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(34,42,58,.55); font-size: .92rem; }
-.step:last-child { border-bottom: none; }
-.step .n {
-  flex: 0 0 22px; height: 22px; border-radius: 7px; background: rgba(94,177,255,.12);
-  color: #5eb1ff; font-size: .78rem; font-weight: 600; display: grid; place-items: center;
+.mock h4 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: .08em; color: #97a1b5; margin-bottom: 12px; font-weight: 600; }
+.mock h4 b { color: #5eb1ff; }
+.mock-card { background: #0f131c; border: 1px solid #222a3a; border-radius: var(--radius); padding: 16px 18px; height: 100%; }
+.stage { display: flex; flex-direction: column; }
+.arrow { display: grid; place-items: center; color: #3b475e; font-size: 1.3rem; }
+
+/* stage 1: watched feed */
+.feed-line { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(34,42,58,.5); font-size: .84rem; color: #97a1b5; }
+.feed-line:last-child { border-bottom: none; }
+.feed-line .t { color: #4d5a72; font-size: .76rem; flex: 0 0 40px; padding-top: 2px; }
+.feed-line b { color: #cbd5e6; font-weight: 500; }
+
+/* stage 2: graph */
+.graph-svg { width: 100%; height: auto; display: block; }
+.graph-chip {
+  margin-top: 12px; font-size: .78rem; color: #cbd5e6;
+  background: rgba(94,177,255,.09); border: 1px solid rgba(94,177,255,.25);
+  border-radius: 9px; padding: 7px 11px;
 }
-.step .muted2 { color: #97a1b5; }
-.chip {
-  display: inline-block; font-size: .72rem; font-weight: 600; padding: 2px 9px;
-  border-radius: 999px; background: rgba(74,222,128,.12); color: #4ade80; margin-left: 8px; vertical-align: 1px;
-}
-.ask-q { font-weight: 600; margin-bottom: 10px; font-size: .95rem; }
-.ask-a { font-size: .9rem; color: #97a1b5; }
+.graph-chip b { color: #5eb1ff; }
+
+/* stage 3: answer */
+.ask-q { font-weight: 600; margin-bottom: 9px; font-size: .89rem; }
+.ask-a { font-size: .84rem; color: #97a1b5; }
 .ask-a b { color: #e8ecf4; }
-.cite {
-  display: inline-grid; place-items: center; min-width: 17px; height: 17px; padding: 0 3px;
-  border-radius: 5px; background: rgba(94,177,255,.14); color: #5eb1ff;
-  font-size: .68rem; font-weight: 700; vertical-align: 2px; margin: 0 1px;
-}
-.src { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(34,42,58,.55); font-size: .78rem; color: #97a1b5; }
-.src span { color: #5eb1ff; }
+.ask-foot { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(34,42,58,.55); font-size: .76rem; color: #4d5a72; }
+.ask-foot span { color: #5eb1ff; }
 
 /* ---------- sections ---------- */
 section.block { padding: 84px 0; border-top: 1px solid var(--border); }
-section.alt { background: var(--bg-soft); }
+section.alt { background: linear-gradient(180deg, var(--bg-soft), #f7fafd); }
+.kicker {
+  display: block; font-size: .78rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
 h2 { font-size: clamp(1.7rem, 3.4vw, 2.35rem); font-weight: 700; margin-bottom: 14px; }
 .sub { color: var(--muted); max-width: 660px; margin-bottom: 44px; font-size: 1.05rem; }
 
@@ -136,37 +155,60 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.35rem); font-weight: 700; margin-bottom: 
 .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .card {
   background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 26px; transition: border-color .2s, transform .2s, box-shadow .2s;
-  box-shadow: var(--shadow);
+  padding: 26px; transition: border-color .2s, transform .2s;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.card::before {
+  content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 3px;
+  border-radius: 0 0 4px 4px; background: var(--tint, var(--accent)); opacity: .55;
 }
 .card:hover { border-color: rgba(43,127,217,.45); transform: translateY(-2px); }
 .card h3 { font-size: 1.12rem; margin-bottom: 8px; }
 .card p { font-size: 0.93rem; color: var(--muted); }
 .stepnum { font-family: "Space Grotesk"; font-size: .8rem; font-weight: 700; color: var(--accent); letter-spacing: .1em; margin-bottom: 10px; }
+.icon-tile {
+  width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+  margin-bottom: 16px; background: var(--tintbg, var(--accent-soft));
+}
+.icon-tile svg { width: 20px; height: 20px; stroke: var(--tint, var(--accent)); fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 
 /* trust list */
 .trust-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; margin-top: 8px; }
-.trust-item { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; }
+.trust-item {
+  display: flex; gap: 12px; align-items: flex-start; font-size: .95rem;
+  background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
 .trust-item .tick { color: var(--good); font-weight: 700; flex: 0 0 auto; margin-top: 1px; }
 .trust-item b { display: block; }
 .trust-item span { color: var(--muted); font-size: .9rem; }
 .worknote {
   margin-top: 36px; padding: 20px 24px; border-left: 3px solid var(--accent);
-  background: var(--accent-soft); border-radius: 0 12px 12px 0; max-width: 720px;
-  font-size: 1.02rem;
+  background: #fff; border-radius: 0 12px 12px 0; max-width: 720px;
+  font-size: 1.02rem; box-shadow: var(--shadow);
 }
 
 /* demo */
-.demo-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px; align-items: center; }
-.video-frame {
-  position: relative; width: 100%; aspect-ratio: 16 / 9;
+.video-card {
+  position: relative; display: block; width: 100%; aspect-ratio: 16 / 9;
   border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
-  box-shadow: var(--shadow); background: #000;
+  box-shadow: 0 16px 50px rgba(23,32,46,.16); background: #000;
 }
-.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-card img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .92; transition: opacity .2s, transform .3s; }
+.video-card:hover img { opacity: 1; transform: scale(1.015); }
+.play-badge {
+  position: absolute; inset: 0; display: grid; place-items: center;
+}
+.play-badge .pb {
+  width: 74px; height: 52px; border-radius: 14px; background: rgba(20, 25, 38, .8);
+  display: grid; place-items: center; backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,.18); transition: background .2s, transform .15s;
+}
+.video-card:hover .pb { background: var(--accent); transform: scale(1.05); }
+.play-badge svg { width: 22px; height: 22px; fill: #fff; margin-left: 3px; }
 
 /* footer / final cta */
-.final { text-align: center; padding: 96px 0; background: var(--bg-soft); border-top: 1px solid var(--border); }
+.final { text-align: center; padding: 96px 0; background: linear-gradient(180deg, var(--bg-soft), #eef4fb); border-top: 1px solid var(--border); }
 .final h2 { margin-bottom: 10px; }
 .final .sub { margin: 0 auto 34px; }
 .final .waitlist { margin: 0 auto; justify-content: center; }
@@ -180,12 +222,12 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
 .reveal.in { opacity: 1; transform: none; }
 
-@media (max-width: 860px) {
+@media (max-width: 880px) {
   .mock { grid-template-columns: 1fr; }
+  .arrow { transform: rotate(90deg); padding: 2px 0; }
   .grid3 { grid-template-columns: 1fr; }
   .grid4 { grid-template-columns: 1fr; }
   .trust-list { grid-template-columns: 1fr; }
-  .demo-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
 }
 </style>
@@ -223,26 +265,49 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 <div class="mockwrap">
   <div class="wrap">
     <div class="mock reveal">
-      <div>
-        <h4>Living walkthrough, built from real work</h4>
+      <div class="stage">
+        <h4><b>Watched</b> · a morning of real work</h4>
         <div class="mock-card">
-          <div style="font-weight:600; margin-bottom:6px;">Process a customer refund <span class="chip">Approved · v4</span></div>
-          <div class="step"><span class="n">1</span><span>Open the order in <b>Stripe</b> and confirm the charge <span class="muted2">matches the email request</span></span></div>
-          <div class="step"><span class="n">2</span><span>Log it in the <b>Refund Log</b> sheet <span class="muted2">with date, order number, and reason code</span></span></div>
-          <div class="step"><span class="n">3</span><span>If it's a duplicate charge, <b>cancel the subscription first</b>, <span class="muted2">then refund, or it re-bills</span></span></div>
-          <div class="step"><span class="n">4</span><span>Reply with the refund template <span class="muted2">(5 to 7 business days)</span></span></div>
+          <div class="feed-line"><span class="t">9:41</span><span>Opened the refund email in <b>Gmail</b></span></div>
+          <div class="feed-line"><span class="t">9:42</span><span>Found the charge in <b>Stripe</b>, checked the order</span></div>
+          <div class="feed-line"><span class="t">9:44</span><span>Cancelled the duplicate subscription first</span></div>
+          <div class="feed-line"><span class="t">9:45</span><span>Logged it in <b>Refund Log.xlsx</b></span></div>
+          <div class="feed-line"><span class="t">9:47</span><span>Replied with the refund template</span></div>
         </div>
       </div>
-      <div>
-        <h4>Ask Nerve anything</h4>
+      <div class="arrow">›</div>
+      <div class="stage">
+        <h4><b>Learned</b> · the map grows</h4>
         <div class="mock-card">
-          <div class="ask-q">Who actually handles duplicate-charge refunds?</div>
-          <div class="ask-a">In practice, <b>Alex</b> resolves duplicate charges
-          <span class="cite">1</span><span class="cite">2</span>. The org chart still lists Sam
-          <span class="cite">3</span>, but every recent case was handled by Alex, who cancels the
-          subscription before refunding <span class="cite">2</span>. <b style="color:#f0b429">Heads up:</b>
-          your records disagree on ownership. Worth updating the org chart.</div>
-          <div class="src"><span>Sources:</span> ticket WAG-2031 · screen recording (Mar 12) · org-chart.xlsx</div>
+          <svg class="graph-svg" viewBox="0 0 300 168" aria-hidden="true">
+            <line x1="150" y1="84" x2="62"  y2="34"  stroke="#33405a" stroke-width="1.4"/>
+            <line x1="150" y1="84" x2="238" y2="36"  stroke="#33405a" stroke-width="1.4"/>
+            <line x1="150" y1="84" x2="244" y2="132" stroke="#33405a" stroke-width="1.4"/>
+            <line x1="150" y1="84" x2="58"  y2="134" stroke="#33405a" stroke-width="1.4"/>
+            <circle cx="150" cy="84" r="17" fill="rgba(94,177,255,.16)"/>
+            <circle cx="150" cy="84" r="8"  fill="#5eb1ff"/>
+            <circle cx="62"  cy="34" r="5"  fill="#8ab4e8"/>
+            <circle cx="238" cy="36" r="5"  fill="#8ab4e8"/>
+            <circle cx="244" cy="132" r="5" fill="#8ab4e8"/>
+            <circle cx="58"  cy="134" r="5" fill="#8ab4e8"/>
+            <text x="150" y="118" text-anchor="middle" fill="#cbd5e6" font-size="11" font-family="Inter, sans-serif" font-weight="600">Customer refunds</text>
+            <text x="62"  y="22"  text-anchor="middle" fill="#97a1b5" font-size="10" font-family="Inter, sans-serif">Alex · support</text>
+            <text x="238" y="24"  text-anchor="middle" fill="#97a1b5" font-size="10" font-family="Inter, sans-serif">Stripe</text>
+            <text x="244" y="152" text-anchor="middle" fill="#97a1b5" font-size="10" font-family="Inter, sans-serif">Refund Log</text>
+            <text x="58"  y="154" text-anchor="middle" fill="#97a1b5" font-size="10" font-family="Inter, sans-serif">Support inbox</text>
+          </svg>
+          <div class="graph-chip"><b>Walkthrough drafted:</b> Process a customer refund, incl. the cancel-first rule nobody wrote down</div>
+        </div>
+      </div>
+      <div class="arrow">›</div>
+      <div class="stage">
+        <h4><b>Ready</b> · for people and AI</h4>
+        <div class="mock-card">
+          <div class="ask-q">Who handles duplicate-charge refunds?</div>
+          <div class="ask-a"><b>Alex</b>, in practice. The org chart says Sam, but recent cases were
+          all handled by Alex, who cancels the subscription before refunding so it doesn't re-bill.
+          <b style="color:#f0b429">Heads up:</b> your records disagree on ownership.</div>
+          <div class="ask-foot">Answered for: <span>a new hire</span> · also available to <span>your support AI</span></div>
         </div>
       </div>
     </div>
@@ -251,25 +316,26 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 
 <section class="block" id="how">
   <div class="wrap">
+    <span class="kicker">How it works</span>
     <h2>Three steps from tribal knowledge to company memory</h2>
     <p class="sub">Process docs go stale the day they're written. Nerve's don't, because they're built from the work itself and updated by it.</p>
     <div class="grid3">
-      <div class="card reveal">
+      <div class="card reveal" style="--tint:#2b7fd9; --tintbg:rgba(43,127,217,.09);">
         <div class="stepnum">01 &nbsp;WATCH</div>
         <h3>A quiet agent captures real work</h3>
         <p>A lightweight agent runs on work machines and observes how tasks actually get done.
         Your capture policy decides what is ever in scope, and the pipeline filters out anything
         personal or irrelevant before it is stored.</p>
       </div>
-      <div class="card reveal">
-        <div class="stepnum">02 &nbsp;UNDERSTAND</div>
+      <div class="card reveal" style="--tint:#7c5cd6; --tintbg:rgba(124,92,214,.09);">
+        <div class="stepnum" style="color:#7c5cd6;">02 &nbsp;UNDERSTAND</div>
         <h3>Work becomes a living dataset</h3>
         <p>Nerve turns recordings and your existing documents into a dataset that has never existed
         before: step-by-step walkthroughs, and a knowledge graph of how roles, tasks, and departments
         connect to run the business.</p>
       </div>
-      <div class="card reveal">
-        <div class="stepnum">03 &nbsp;ASK</div>
+      <div class="card reveal" style="--tint:#1a9e57; --tintbg:rgba(26,158,87,.09);">
+        <div class="stepnum" style="color:#1a9e57;">03 &nbsp;ASK</div>
         <h3>People and AI tools tap the memory</h3>
         <p>Your team asks questions in plain English and gets real answers about how things work.
         The AI tools your company already uses plug into the same memory, so every copilot and
@@ -281,25 +347,30 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 
 <section class="block alt">
   <div class="wrap">
+    <span class="kicker">The memory</span>
     <h2>An operational memory for your company</h2>
     <p class="sub">What your best people know, available to everyone and everything that needs it.</p>
     <div class="grid4">
-      <div class="card reveal">
+      <div class="card reveal" style="--tint:#2b7fd9; --tintbg:rgba(43,127,217,.09);">
+        <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5-8 4.5-8-4.5L12 3z"/><path d="M4 12l8 4.5 8-4.5"/><path d="M4 16.5L12 21l8-4.5"/></svg></div>
         <h3>It knows how everything works</h3>
         <p>Not just documents. Nerve holds how each task is done, who really does it, and how work
         moves between people and systems. When the process changes, the record changes with it.</p>
       </div>
-      <div class="card reveal">
+      <div class="card reveal" style="--tint:#1a9e57; --tintbg:rgba(26,158,87,.09);">
+        <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
         <h3>Secure by engineering</h3>
         <p>Login screens are never captured. Personal information is scrubbed before anything is
         stored. What gets kept is decided by pipeline rules, not by hoping everyone stays careful.</p>
       </div>
-      <div class="card reveal">
+      <div class="card reveal" style="--tint:#b97d10; --tintbg:rgba(185,125,16,.09);">
+        <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M5 7h14"/><path d="M5 7l-2.5 6a3.5 3.5 0 007 0L7 7"/><path d="M19 7l-2.5 6a3.5 3.5 0 007 0L21 7" transform="translate(-2 0)"/></svg></div>
         <h3>Honest when records disagree</h3>
         <p>When the official process and reality drift apart, Nerve says so instead of guessing.
         That is how stale process gets found and fixed.</p>
       </div>
-      <div class="card reveal">
+      <div class="card reveal" style="--tint:#7c5cd6; --tintbg:rgba(124,92,214,.09);">
+        <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"/><rect x="5" y="7" width="14" height="7" rx="2"/><path d="M12 14v4"/><path d="M8 21h8"/><path d="M12 18h.01"/></svg></div>
         <h3>Unlocks every AI you use</h3>
         <p>Your support bot, coding agents, and copilots can query Nerve's memory of your company
         mid-task. The smarter AI gets, the more that connection is worth.</p>
@@ -310,6 +381,7 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 
 <section class="block" id="trust">
   <div class="wrap">
+    <span class="kicker">Trust</span>
     <h2>Built to be trusted, not feared</h2>
     <p class="sub">Trust isn't a setting. It's engineered into the pipeline itself.</p>
     <div class="trust-list">
@@ -327,15 +399,15 @@ footer { border-top: 1px solid var(--border); padding: 34px 0; background: #fff;
 
 <section class="block alt" id="demo">
   <div class="wrap">
+    <span class="kicker">Demo</span>
     <h2>Watch Nerve learn a world from scratch</h2>
     <p class="sub">A walkthrough of what Nerve is, then a live test: a fresh Minecraft world it had never
     seen. Nerve watched the screen, worked out what was happening, and wrote the guides and
     knowledge itself. Swap the game for your operations and that's Nerve.</p>
-    <div class="video-frame reveal">
-      <iframe src="https://www.youtube.com/embed/kxrKZ8J987Q" title="Nerve demo"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    </div>
+    <a class="video-card reveal" href="https://youtu.be/kxrKZ8J987Q" target="_blank" rel="noopener" aria-label="Watch the Nerve demo on YouTube">
+      <img src="https://img.youtube.com/vi/kxrKZ8J987Q/maxresdefault.jpg" alt="Nerve demo video">
+      <span class="play-badge"><span class="pb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+    </a>
   </div>
 </section>
 
